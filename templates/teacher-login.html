@@ -1,0 +1,42 @@
+<!-- <%@page contentType="text/html" pageEncoding="UTF-8"%> -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Teacher Login</title>
+
+
+<link rel="stylesheet" type="text/css" href="/static/styles.css">
+
+</head>
+
+
+<body>
+<div class="container" id="container">
+	
+	<div class="form-container sign-in-container">
+<img src="/static/logo.png" alt="img">
+
+<form action="teacher-login-request" method="post">
+
+	<h1>Sign in</h1>
+	<input type="text" name="t_id" id="t_id" placeholder="Id" />
+	<input type="password" name="password" id="password" placeholder="Password" />
+	<button>Sign In</button>
+</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			
+			<div class="overlay-panel overlay-right">		
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

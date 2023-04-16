@@ -1,0 +1,113 @@
+<!-- <%@page contentType="text/html" pageEncoding="UTF-8"%> -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>Student Register</title>
+
+
+<link rel="stylesheet" type="text/css" href="/static/styles.css">
+
+</head>
+
+
+<body>
+<div class="container" id="container">
+	
+	<div class="form-container sign-in-container">
+<img src="/static/logo.png" alt="img">
+
+		<form action="student-register-request" method="post" enctype="multipart/form-data">
+
+			<h1 class="reg-head">Register</h1>
+			<label>Enter Name</label>
+			<input type="text" name="name" id="name">
+			<label>Enter Roll Number</label>
+			<input type="text" name="rollno" id="rollno">
+			<label>Enter Section</label>
+			<input type="text" name="section" id="section">
+			<label>Enter Email</label>
+			<input type="email" name="email" id="emil">
+
+		
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			
+			<div class="overlay-panel overlay-right">
+				<div class="fields">
+				<label>Enter Password</label>
+				<input type="password" name="password" id="password">
+				<label>Enter Phone Number</label>
+				<input type="text" name="phnno" id="phnno">
+				</div>
+				
+				
+				<label class="file-upload-head">Upload your pictures</label>
+				<div class="file-upload-wrapper">
+					<div class="file-div">
+						<input type="file" name="input-file-1" id="input-file-1" class="file-upload" />
+  					<label for="input-file-1" class="file-label">Left</label>
+  						<span> <strong>Chosen file:</strong>
+						<span id="file-name-1">None</span>
+						</span>
+						<script>
+							let inputFile1 = document. getElementById('input-file-1');
+							let fileNameField1 = document.getElementById('file-name-1');
+							inputFile1.addEventListener('change', function(event) {
+							let uploadedFileName = event.target.files[0].name;
+							fileNameField1.textContent = uploadedFileName;
+							})
+						</script>
+					</div>
+					<div class="file-div">
+						<input type="file" name="input-file-2" id="input-file-2" class="file-upload" />
+					<label for="input-file-2" class="file-label">Front</label>
+						<span> <strong>Chosen file:</strong>
+						<span id="file-name-2">None</span>
+						</span>
+						<script>
+							let inputFile2 = document. getElementById('input-file-2');
+							let fileNameField2 = document.getElementById('file-name-2');
+							inputFile2.addEventListener('change', function(event) {
+							let uploadedFileName = event.target.files[0].name;
+							fileNameField2.textContent = uploadedFileName;
+							})
+						</script>
+					</div>
+					<div class="file-div">
+						<input type="file" name="input-file-3" id="input-file-3" class="file-upload" />
+					<label for="input-file-3" class="file-label">Right</label>
+						<span> <strong>Chosen file:</strong>
+						<span id="file-name-3">None</span>
+						</span>
+						<script>
+							let inputFile3 = document. getElementById('input-file-3');
+							let fileNameField3 = document.getElementById('file-name-3');
+							inputFile3.addEventListener('change', function(event) {
+							let uploadedFileName = event.target.files[0].name;
+							fileNameField3.textContent = uploadedFileName;
+							})
+						</script>
+					</div>	
+			</div>
+				<button class="ghost" id="signUp">Submit</button>
+			</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!-- <%@page contentType="text/html" pageEncoding="UTF-8"%> -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Student Login</title>
+
+<link rel="stylesheet" type="text/css" href="/static/styles.css">
+
+</head>
+
+<body>
+<div class="container" id="container">
+	
+	<div class="form-container sign-in-container">
+<img src="/static/logo.png" alt="img">
+
+		<form action="student-login-request" method="post">
+
+			<h1>Sign in</h1>
+			<input type="text" name="rollno" id="rollno" placeholder="rollno" />
+			<input type="password" name="password" id="password" placeholder="Password" />
+			<button>Sign In</button>
+		</form>
+
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-right">
+				<div class="form-container sign-up-container">
+					<form action="student-register" method="get">
+						<button type="submit" class="ghost" id="">Sign Up</button>
+					
+				</div>
+				<h1>Register Now</h1>
+				<p>if you are a new user</p>
+				<button onclick="href='student-register'" type="submit" class="ghost" id="signUp">Sign Up</button>
+				<br>
+			</form>
+				</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
