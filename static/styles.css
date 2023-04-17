@@ -17,6 +17,14 @@ img{
 	padding-left: 10px;
 }
 
+img.student{
+	height: 230px;
+	width: 315px;
+	position: absolute;
+	margin-bottom: 130px;
+	margin-right: 10px;
+}
+
 body {
 	background: #f6f5f7;
 	display: flex;
@@ -38,8 +46,16 @@ h1.home-heading{
 	color: #34363E;
 }
 
+h1.student-name{
+	margin-top: 200px;
+}
+
 h2 {
 	text-align: center;
+}
+
+h3{
+	font-size: 1.5rem;
 }
 
 h4{
@@ -110,6 +126,23 @@ input {
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 100%;
+}
+
+th{
+	position: sticky;
+}
+
+th,td{
+	border: 1px solid black;
+	padding: 5px;
+}
+
+table{
+	min-width: max-content;
+	border: 1px solid black;
+	border-collapse: separate;
+	border-spacing: 0px;
+
 }
 
 .heading{
@@ -320,6 +353,87 @@ padding-bottom: 10px;
 	flex-direction: column;
 	align-items: start;
 	width: 284px;
+}
+
+.info{
+	display: flex;
+	flex-direction: column;
+	height: 200px;
+	width: 284px;
+	position: absolute;
+	margin-left: 50px;
+	margin-top: 100px;
+}
+
+.details{
+	font-size: 1rem;
+	padding-bottom: 10px;
+}
+
+.details-box{
+	display: flex;
+	flex-direction: column;
+	padding-top: 30px;
+}
+
+.dropdown-container{
+	display: flex;
+	flex-direction: row;
+	width: 400px;
+	justify-content: space-between;
+	z-index: 1;
+}
+
+.drop-button{
+	border-radius: 5px;
+}
+
+.dropdown{
+	position: relative;
+}
+
+.dropdown-menu{
+	position: absolute;
+	left: 0;
+	top: calc(100% + .25rem);
+	background-color: white;
+	padding: 0.75rem;
+	border-radius: 5px;
+	box-shadow: 0px 2px 5px 0 rgba(0,0,0,.5);
+	opacity: 0;
+	pointer-events: none;
+  	transform: translateY(-10px);
+  	transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+}
+
+.dropdown.active > .drop-button + .dropdown-menu{
+	opacity: 1;
+	transform: translateY(0);
+  	pointer-events: auto;
+}
+
+.dropdown-links{
+	display: flex;
+	flex-direction: column;
+	width: 142px;
+}
+
+.logout{
+	margin-top: 0px;
+}
+
+.student-data{
+	max-height: 140px;
+	max-width: 660px;
+	overflow: auto;
+	margin-top: 240px;
+	margin-left: 50px;
+}
+
+.bottom-buttons{
+	margin-left: 50px;
+	margin-top: 20px;
+
 }
 
 footer {

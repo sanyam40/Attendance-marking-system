@@ -1,0 +1,76 @@
+<!-- <%@page contentType="text/html" pageEncoding="UTF-8"%> -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Student Display</title>
+<link rel="stylesheet" type="text/css" href="/static/styles.css">
+<script>
+	var msg = {msg};
+	console.log(msg);
+</script>
+</head>
+
+<body>
+<div class="container" id="container">
+	
+	<div class="form-container sign-in-container">
+	<img src="/static/logo.png" alt="img">
+	<div class="info">
+		<h3>Attendance summary</h3>
+		<div class="dropdown" data-dropdown>
+			<button class="drop-button" data-dropdown-button>Course ID</button>
+			<div class="dropdown-menu">
+				<div class="dropdown-links">
+					<a href="">CSL214</a>
+					<a href="">CSL422</a>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			document.addEventListener("click", e => {
+			  const isDropdownButton = e.target.matches("[data-dropdown-button]")
+			  if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return
+
+			  let currentDropdown
+			  if (isDropdownButton) {
+			    currentDropdown = e.target.closest("[data-dropdown]")
+			    currentDropdown.classList.toggle("active")
+			  }
+
+			  document.querySelectorAll("[data-dropdown].active").forEach(dropdown => {
+			    if (dropdown === currentDropdown) return
+			    dropdown.classList.remove("active")
+			  })
+			})
+
+		</script>
+		
+		<div class="details-box">
+			<label class="details">Total Absent: {{absent}}</label>
+			<label class="details">Total Present: {{present}}</label>
+		</div>
+		<form action="logout">
+		<button type="submit" class="logout">Logout</button></form>
+		
+	</div>
+		
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-right">		
+				<img class="student" src="{{filename}}">
+				<br>
+				<h1 class="student-name">{{name}}</h1><!-- name of student to be added -->
+				<label class="details">{{rollno}} : {{section}} </label>
+				<label class="details">{{email}}</label>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

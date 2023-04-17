@@ -1,9 +1,9 @@
-from flask import flash,Blueprint,render_template,request,jsonify,redirect,url_for
+from flask import Flask,flash,Blueprint,render_template,request,jsonify,redirect
 import mysql.connector
 import os
 from werkzeug.utils import secure_filename 
-import pandas as pd  
-import csv   
+import pandas as pd   
+import re
 
 views=Blueprint(__name__,"attendence")
 global rollno
@@ -15,7 +15,6 @@ mydb=mysql.connector.connect(host="localhost",user="root",passwd="0721",database
 # HANDLER METHODS FOR HOME PAGE
 @views.route('/home')
 def home():
-    read_attendence()
     return render_template('home.html')
 
 @views.route('/')
@@ -52,16 +51,48 @@ def student_login_request():
         # CHECKING IF THERE IS RECORD IN THE DATABASE OR NOT
         if results:
             #CHECKING THE USER TYPE AND REDIRECTING TO THE RESPECTIVE PAGE
+            
             print("login successful for student")
-            return render_template('student-attendence.html')
+            stmt=("select * from student where rollno=%s" ,(rollno,))
+            cursor.execute(*stmt)
+            result1=cursor.fetchone()
+            name=result1[0]
+            section=result1[2]
+            email=result1[3]
+
+            stmt2=("select count(absent) from student_attendence where rollno=%s",(rollno,))
+            cursor.execute(*stmt2)
+            no_of_absent=cursor.fetchall()
+            absentt=no_of_absent[0]
+            absent=int(re.sub(r'\D', '', ''.join(map(str, absentt)) ))
+
+            stmt3=("select count(present) from student_attendence where rollno=%s",(rollno,))
+            cursor.execute(*stmt3)
+            no_of_present=cursor.fetchone()
+            present=no_of_present[0]
+       
+            #cursor.execute("select c_id from course")
+            ###courses=cursor.fetchmany()
+            #c_id=list(courses)
+            #for i in c_id:
+             #   print(i)
+        
+            filename=("\static\images\\"+rollno+"front.jpg")
+            
+            return render_template('student-panel.html',rollno=request.form['rollno'],name=name,section=section,email=email,absent=absent,present=present,filename=filename)
         else:
             # IF THE USERNAME AND PASSWORD DOES NOT MATCHES RETURN TO HOME PAGE
             print("incorrect")
-            return render_template('index.html')
+            return render_template('home.html')
     
     else:
-        return render_template('index.html')
+        return render_template('home.html')
     
+#HANDLER METHOD FOR LOGOUT REQUEST    
+@views.route("/logout")
+def logout():
+    return redirect("/home")
+
 # METHOD TO SHOW THE STUDENT REGISRATION PAGE
 @views.route('/student-register')
 def student_register():
@@ -81,18 +112,18 @@ def register_student():
         
         left = request.files['input-file-1']
         filename_left = secure_filename(left.filename)
-        left.save(os.path.join('S:\ProjectD\static\images', rollno+"-left.jpg"))
-        left = os.path.join('S:\ProjectD\static\images', rollno+"-left.jpg")
+        left.save(os.path.join('S:\ProjectD\static\images', rollno+"left.jpg"))
+        left = os.path.join('S:\ProjectD\static\images', rollno+"left.jpg")
 
         front = request.files['input-file-2']
         filename_front = secure_filename(front.filename)
-        front.save(os.path.join('S:\ProjectD\static\images', rollno+"-front.jpg"))
-        front = os.path.join('S:\ProjectD\static\images', rollno+"-front.jpg")
+        front.save(os.path.join('S:\ProjectD\static\images', rollno+"front.jpg"))
+        front = os.path.join('S:\ProjectD\static\images', rollno+"front.jpg")
 
         right = request.files['input-file-3'] 
         filename_right = secure_filename(right.filename)
-        right.save(os.path.join('S:\ProjectD\static\images', rollno+"-right.jpg"))
-        right = os.path.join('S:\ProjectD\static\images', rollno+"-right.jpg")
+        right.save(os.path.join('S:\ProjectD\static\images', rollno+"right.jpg"))
+        right = os.path.join('S:\ProjectD\static\images', rollno+"right.jpg")
         
         print(name)
         cursor=mydb.cursor()
@@ -100,7 +131,7 @@ def register_student():
         cursor.execute(*stmt)
         mydb.commit()
 
-        return render_template('student-login.html')
+        return redirect('student-panels')
     
     return render_template('student-login.html')
 
@@ -130,11 +161,16 @@ def teacher_login_request():
         results=cursor.fetchone()
         print(results)
 
+        stmt2=("select name,sta.rollno,sta.section,present,absent,c_id,date,time from student as st JOIN student_attendence as sta on st.rollno=sta.rollno;")
+        table=cursor.execute(stmt2)
+        data=cursor.fetchall()
+        print(data)
+
         # CHECKING IF THERE IS RECORD IN THE DATABASE OR NOT
         if results:
             #CHECKING THE USER TYPE AND REDIRECTING TO THE RESPECTIVE PAGE
-            print("login successful for student")
-            return render_template('teacher-attendence.html')
+            print("login successful for TEACHER")
+            return render_template('teacher-panel.html',data=data)
         else:
             # IF THE USERNAME AND PASSWORD DOES NOT MATCHES RETURN TO HOME PAGE
             print("incorrect")
@@ -145,34 +181,35 @@ def teacher_login_request():
 
 # METHOD TO READ THE CSV FILE AND MARK THE ATTENDENCE
 def read_attendence():
+    cursor=mydb.cursor()
     # opening the CSV file
-    with open('attendence.csv', mode ='r')as file:
-        # reading the CSV file
-        csvFile = csv.reader(file)
-        cursor=mydb.cursor()
-        # displaying the contents of the CSV file
-        for lines in csvFile:
-            command="insert into student_attendence(rollno) values(%s)"
-            cursor.execute(command,tuple(lines))
-            mydb.commit();
-            print(lines)
+    df=pd.read_csv("attendence.csv")
 
-# STUDENT ATTENDENCE PANEL 
-@views.route('/student-panel',methods=['GET','POST'])
-def student_panel_details():
-   cursor=mydb.cursor()
-   
-   stmt=("select * from student where rollno=%s" ,(rollno,))
-   result1=cursor.fetchone()
-   print(result1)
+    rollnos=df['RollNo']
+    section=df['Section']
+    date=df['DATE']
+    time=df['TIME']
+    present=df['PRESENT']
+    absent=df['ABSENT']
+    course=df['Course']
 
-   stmt2=("select count(absent) from student_attendence where rollno=%s",(rollno,))
-   no_of_absent=cursor.fetchall()
-   print(no_of_absent)
+    database=('TRUNCATE TABLE student_attendence')
+    cursor.execute(database)
+    mydb.commit()
 
-   stmt3=("select count(present) from student_attendence where rollno=%s",(rollno,))
-   no_of_present=cursor.fetchall()
-   print(no_of_present)
+    i=0
 
-   return render_template("index.html", user_image = 'S:\ProjectD\static\images', rollno +"-front.jpg")
- 
+    while i<rollnos.size and i<section.size:
+        roll=rollnos[i].astype(str)
+        sec=section[i]
+        datee=date[i]
+        timee=time[i].astype(str)
+        presentt=present[i].astype(str)
+        absentt=absent[i].astype(str)
+        c_id=course[i]
+
+        stmt=('insert into student_attendence(absent,present,Date,rollno,time,section,c_id) values(%s,%s,%s,%s,%s,%s,%s)',(absentt,presentt,datee,roll,timee,sec,c_id))
+
+        cursor.execute(*stmt)
+        mydb.commit()
+        i+=1

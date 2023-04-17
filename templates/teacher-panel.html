@@ -1,0 +1,98 @@
+<!-- <%@page contentType="text/html" pageEncoding="UTF-8"%> -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>Teacher Login</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/styles.css" />
+  </head>
+
+  <body>
+    <div class="container" id="container">
+      <img src="/static/logo.png" alt="img" />
+
+      <div class="info">
+        <h3>Attendance summary</h3>
+        <div class="dropdown-container">
+          <div class="dropdown" data-dropdown>
+            <button class="drop-button" data-dropdown-button>Course ID</button>
+            <div class="dropdown-menu">
+              <div class="dropdown-links">
+                <h3>abc</h3>
+                <h3>xyz</h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="dropdown" data-dropdown>
+            <button class="drop-button" data-dropdown-button>Section</button>
+            <div class="dropdown-menu">
+              <div class="dropdown-links">
+                <a href="">abc</a>
+                <a href="">xyz</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script type="text/javascript">
+        document.addEventListener("click", (e) => {
+          const isDropdownButton = e.target.matches("[data-dropdown-button]");
+          if (!isDropdownButton && e.target.closest("[data-dropdown]") != null)
+            return;
+
+          let currentDropdown;
+          if (isDropdownButton) {
+            currentDropdown = e.target.closest("[data-dropdown]");
+            currentDropdown.classList.toggle("active");
+          }
+
+          document
+            .querySelectorAll("[data-dropdown].active")
+            .forEach((dropdown) => {
+              if (dropdown === currentDropdown) return;
+              dropdown.classList.remove("active");
+            });
+        });
+      </script>
+
+      <div class="student-data">
+        <table>
+          <tr>
+            <th>name</th>
+            <th>rollno</th>
+            <th>section</th>
+            <th>present</th>
+            <th>absent</th>
+            <th>c_id</th>
+            <th>date</th>
+            <th>time</th>
+          </tr>
+          <!-- here is a for-loop to give us all the socks -->
+          {% for item in data %}
+          <tr>
+            <td>{{ item[0] }}</td>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td>{{ item[3] }}</td>
+            <td>{{ item[4] }}</td>
+            <td>{{ item[5] }}</td>
+            <td>{{ item[6] }}</td>
+            <td>{{ item[7] }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+      <div class="bottom-buttons">
+        <form action="logout">
+          <button type="submit" class="logout">Logout</button>
+        </form>
+        <button class="logout">Download table</button>
+      </div>
+    </div>
+  </body>
+</html>
